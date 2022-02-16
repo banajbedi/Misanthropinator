@@ -1,52 +1,49 @@
 <!DOCTYPE html> <!-- "information" to the browser about what document type to expect -->
-<html lang="en" ><!--"this is used to sepcify the default language of the web page"-->
+<html lang = "en" ><!--"this is used to sepcify the default language of the web page"-->
     <head>
         <title>Misanthropinator</title> <!--"heading of the web page"-->
-        <meta charset="utf-8"> <!--tells the browser to use the utf-8 character encoding when translating machine code into human-readable text and vice-->
-        <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- This tag tells the browser to fit the webpage into the browser default dimensions i.e screen is 320px wide, the browser window will be 320px wide, rather than way zoomed out -->
-        <meta name="author" content="Banaj and chandan"> <!-- defines author name  -->
-        <link rel="stylesheet" href="style.css"> <!--importing the webpage stylesheet,The required rel attribute specifies the relationship between the current document and the linked document/resource,href-> hypertext reference-->
-        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js" type="text/javascript"></script><!--HTML script element is used to embed or reference executable code-->
+        
+        <meta charset = "utf-8"> <!--tells the browser to use the utf-8 character encoding when translating machine code into human-readable text and vice-->
+        <meta name = "viewport" content = "width = device-width, initial-scale = 1"> <!-- This tag tells the browser to fit the webpage into the browser default dimensions i.e screen is 320px wide, the browser window will be 320px wide, rather than way zoomed out -->
+        <meta name = "author" content = "Banaj Bedi and Chandan Kansal"> <!-- defines author name  -->
+        
+        <link rel = "stylesheet" href = "style.css"> <!--importing the webpage stylesheet,The required rel attribute specifies the relationship between the current document and the linked document/resource,href-> hypertext reference-->
+        
+        <!-- Importing Tensorflow library -->
+        <script src = "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js" type = "text/javascript"></script> <!--HTML script element is used to embed or reference executable code-->
     </head>
+
     <body>
-        <h1>Misanthropinator -> Human's not liked...</h1>
-        <header class="note">
+        <h1>Misanthropinator -> Humans not liked...</h1>
+        <header class = "note">
             <h2>Magic Eraser using Tensorflow.js</h2> 
         </header>
-        <h2>INSTRUCTIONS -> </h2>
+        <h2>INSTRUCTIONS : </h2>
         <p>Please wait for the Model to load before trying.</p>
+
+
+        <!-- section, div, id, class, button and video definition in document -->
+        <section id = "demos" class = "invisible">
+            <h2>Try Live Demo!!!</h2>
+            <p>Enable webcam and see the magic!</p>
+
+            <div id = "liveView" class = "webcam">
+                <button id = "webcamButton">ENABLE WEBCAM</button>
+                <video id = "webcam" autoplay></video>  <!-- autoplay -> specifies that the video will start playing as soon as it is ready -->
+
+            <!-- these id and class are referenced by both CSS and JSS file -->
+            </div>
+        </section>
+
+        <!-- Loading the bodypix model. For info refer document-->
+        <script src = "https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.0"></script>
+
+        <!-- Import the JavaScript file -->
+        <script src="source.js" defer></script>
+        <!--    
+            The defer attribute is a boolean attribute.
+            If the defer attribute is set, it specifies that the script is downloaded in parallel to parsing the page, and executed after the page has finished parsing.
+            Note: The defer attribute is only for external scripts (should only be used if the src attribute is present). 
+        -->
     </body>
-
-
-
-
-
-
-
-
-
-
-
-<!-- section, div, id, class, button and video definition in document -->
-<section id = "demos" class = "invisible">
-    <h2>Try Live Demo!!!</h2>
-    <p>Enable webcam and see the magic!</p>
-
-    <div id = "liveView" class = "webcam">
-        <button id = "webcamButton">ENABLE WEBCAM</button>
-        <video id = "webcam" autoplay></video>  <!-- autoplay -> specifies that the video will start playing as soon as it is ready -->
-
-    <!-- these id and class are referenced by both CSS and JSS file -->
-    </div>
-</section>
-
-<!-- Loading the bodypix model. For info refer document-->
-<script src = "https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.0"></script>
-
-<!-- Import the JavaScript file -->
-<script src="source.js" defer></script>
-<!--    
-    The defer attribute is a boolean attribute.
-    If the defer attribute is set, it specifies that the script is downloaded in parallel to parsing the page, and executed after the page has finished parsing.
-    Note: The defer attribute is only for external scripts (should only be used if the src attribute is present). 
--->
+</html>
