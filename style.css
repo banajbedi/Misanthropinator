@@ -1,0 +1,34 @@
+body {
+    font-family: Avantgarde, TeX Gyre Adventor, URW Gothic L, sans-serif;
+    margin: 2em;
+    color: #3D3D3D;
+  }
+h1{
+    font-style: BOLD;
+    color: black;
+}
+h2{
+    font-style: italic;
+}
+h3{
+    clear:both;
+}
+video{
+    clear: both;
+    display: block; /*CSS Display property with value block renders an element with parent’s full width available, it also forces a line break.*/ 
+}
+section{
+    opacity: 1; /*The opacity property sets the opacity level for an element.*/
+}
+button {
+    z-index: 1000; /*The z-index property specifies the stack order of an element.An element with greater stack order is always in front of an element with a lower stack order.*/
+    position: relative;/*An element with position: relative; is positioned relative to its normal position.*/
+  }
+  
+  .removed {
+    display: none;
+  }
+  
+  .invisible {
+    opacity: 0.2;
+  }
