@@ -25,15 +25,26 @@
 
 
 
+<!-- section, div, id, class, button and video definition in document -->
+<section id = "demos" class = "invisible">
+    <h2>Try Live Demo!!!</h2>
+    <p>Enable webcam and see the magic!</p>
 
+    <div id = "liveView" class = "webcam">
+        <button id = "webcamButton">ENABLE WEBCAM</button>
+        <video id = "webcam" autoplay></video>  <!-- autoplay -> specifies that the video will start playing as soon as it is ready -->
 
-<h2>Try Live Demo!!!</h2>
-<p>Enable webcam and see the magic!</p>
+    <!-- these id and class are referenced by both CSS and JSS file -->
+    </div>
+</section>
 
-<!-- div, id, class, button and video definition in document -->
-<div id = "liveView" class = "webcam">
-    <button id = "webcamButton">ENABLE WEBCAM</button>
-    <video id = "webcam" autoplay></video>  <!-- autoplay -> specifies that the video will start playing as soon as it is ready -->
+<!-- Loading the bodypix model. For info refer document-->
+<script src = "https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.0"></script>
 
-<!-- these id and class are referenced by both CSS and JSS file -->
-</div>
+<!-- Import the JavaScript file -->
+<script src="source.js" defer></script>
+<!--    
+    The defer attribute is a boolean attribute.
+    If the defer attribute is set, it specifies that the script is downloaded in parallel to parsing the page, and executed after the page has finished parsing.
+    Note: The defer attribute is only for external scripts (should only be used if the src attribute is present). 
+-->
