@@ -72,3 +72,11 @@ model = bodyPix.load(bodyPixProperties).then(function (loadedModel) {
 });
 
 // just like lr = LinearRegression(), we have model with bodyPix attributes
+var previousSegmentationComplete = true;
+
+function hasGetUserMedia() {
+    return !!(navigator.mediaDevices &&
+      navigator.mediaDevices.getUserMedia);
+  }
+  /* The JavaScript navigator object is used for browser detection and 
+  navigator.mediaDevices.getUserMedia prompts user to allow th requested media device*/
