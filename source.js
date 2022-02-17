@@ -72,11 +72,46 @@ model = bodyPix.load(bodyPixProperties).then(function (loadedModel) {
 });
 
 // just like lr = LinearRegression(), we have model with bodyPix attributes
+
+
+
+
+// ********************************************************************
+//      Continuously grab image from webcam stream and classify it.
+// ********************************************************************
+
 var previousSegmentationComplete = true;
 
+// Funciton to check if webcam access is supported.
 function hasGetUserMedia() {
     return !!(navigator.mediaDevices &&
       navigator.mediaDevices.getUserMedia);
   }
-  /* The JavaScript navigator object is used for browser detection and 
-  navigator.mediaDevices.getUserMedia prompts user to allow th requested media device*/
+//  The JavaScript navigator object is used for browser detection and 
+//   navigator.mediaDevices.getUserMedia prompts user to allow th requested media device
+
+
+// This function will repeatedly call itself when the browser is ready to process
+// the next frame from webcam.
+function predictWebcam() {
+  if (previousSegmentationComplete) {
+    // Copy the video frame from webcam to a tempory canvas in memory only (not in the DOM).
+    videoRenderCanvasCtx.drawImage(video, 0, 0);
+    previousSegmentationComplete = false;
+
+    // Now classify the canvas image we have available.
+    // Multiple people in the image get merged into a single binary mask. 
+    // In addition to width, height, and data fields, it returns a field allPoses which contains poses for all people.
+    model.segmentPerson(videoRenderCanvas, segmentationProperties).then(function(segmentation) {
+      processSegmentation(webcamCanvas, segmentation); // this function is defined above
+      previousSegmentationComplete = true;
+    });
+  }
+
+  // Call this function again to keep predicting when the browser is ready.
+  // The window.requestAnimationFrame() method tells the browser that you wish 
+  // to perform an animation and requests that the browser calls a specified function
+  // to update an animation before the next repaint. The method takes a callback as an argument to be invoked before the repaint.
+  window.requestAnimationFrame(predictWebcam);
+}
+
