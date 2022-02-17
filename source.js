@@ -8,7 +8,7 @@
 const video = document.getElementById('webcam');
 const liveView = document.getElementById('liveView');
 const demosSection = document.getElementById('demos');
-const DEBUG = false;
+const DEBUG = true;
 
 // If you are planning on debugging your application, 
 // you'll generally want the debug attribute to be set to "true". 
@@ -49,3 +49,26 @@ const segmentationProperties = {
 // segmentationThreshold -> The model estimates a score between 0 and 1 that indicates how confident it is that part of a person is displayed in that pixel.
 //                          In essence, a higher value will create a tighter crop around a person.
 // scoreThreshold        -> For pose estimation, only return individual person detections that have root part score greater or equal to this value.
+
+
+
+
+
+
+
+// Loading the model with our parameters defined above.
+// Before we can use bodypix class we must wait for it to finish
+// loading. Machine Learning models can be large and take a moment to
+// get everything needed to run.
+var modelHasLoaded = false;
+var model = undefined;
+
+model = bodyPix.load(bodyPixProperties).then(function (loadedModel) {
+  model = loadedModel;
+  modelHasLoaded = true;
+
+  // Showing that demo section now model is ready to use.
+  demosSection.classList.remove('invisible');
+});
+
+// just like lr = LinearRegression(), we have model with bodyPix attributes
