@@ -10,11 +10,11 @@ const liveView = document.getElementById('liveView');
 const demosSection = document.getElementById('demos');
 const DEBUG = true;
 
-// If you are planning on debugging your application, 
+// If you are  strategizing on debugging your application, 
 // you'll generally want the debug attribute to be set to "true". 
-// If you are planning on compiling your application for release (i.e. being actually released and deployed), 
+// If you are planning on compiling your application for release (i.e. being ready for actual released and deployment), 
 // it's generally better to not have the debug attribute (or have it set to false).
-// Disabling the debug option will allow the compiler to take advantage of various performance tweaks 
+// Not Setting the debug option will allow the compiler to take advantage of various performance tweaks 
 // since it won't need to worry about any possibly debugging and it can build a more optimized application.
 
 
@@ -223,12 +223,12 @@ webcamCanvas.setAttribute('class', 'overlay');  //overlay value is set for class
 // which would be then used to process the frames through the BodyPix model.
 liveView.appendChild(webcamCanvas); // appendChild() method appends a node as the last child of a node
 
-var bodyPixCanvas = document.createElement('canvas');
-bodyPixCanvas.setAttribute('class', 'overlay');
-var bodyPixCanvasCtx = bodyPixCanvas.getContext('2d');
-bodyPixCanvasCtx.fillStyle = '#FF0000';
+// var bodyPixCanvas = document.createElement('canvas');
+// bodyPixCanvas.setAttribute('class', 'overlay');
+// var bodyPixCanvasCtx = bodyPixCanvas.getContext('2d');
+// bodyPixCanvasCtx.fillStyle = '#FF0000';
 
-liveView.appendChild(bodyPixCanvas);
+// liveView.appendChild(bodyPixCanvas);
 
 
 
@@ -261,8 +261,8 @@ function enableCam(event) {
       webcamCanvas.height = video.videoHeight;
       videoRenderCanvas.width = video.videoWidth;
       videoRenderCanvas.height = video.videoHeight;
-      bodyPixCanvas.width = video.videoWidth;
-      bodyPixCanvas.height = video.videoHeight; 
+      // bodyPixCanvas.width = video.videoWidth;
+      // bodyPixCanvas.height = video.videoHeight; 
       
       let webcamCanvasCtx = webcamCanvas.getContext('2d');
       // Displaying the first frame of the video in the “webcamCanvas” which will be displayed below the live video on the screen.
