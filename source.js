@@ -20,7 +20,7 @@ const DEBUG = true;
 
 // configure parameters to set for the bodypix model.
 const bodyPixProperties = {
-    architecture: 'ResNet',
+    architecture: 'ResNet50',
     outputStride: 16,
     quantBytes: 4
   };
@@ -51,14 +51,101 @@ const segmentationProperties = {
 // scoreThreshold        -> For pose estimation, only return individual person detections that have root part score greater or equal to this value.
 
 function processSegmentation(canvas, segmentation) {
-
-  // getContext() function returns a drawing context on the canvas, or null if the context identifier is not supported
   var ctx = canvas.getContext('2d');
-  console.log(segmentation) // prints the segmentation onto console
-
+  console.log(segmentation)
   // Get data from our overlay canvas which is attempting to estimate background.
-  var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);  //store ctx to variable named imagedata starting from 0,0 to canvas width, canvas height
-  var data = imageData.data;  //assigning the pixel data of variable imageData to variable named Data
+  var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  var data = imageData.data;
+  
+  // Get data from the live webcam view which has all data.
+  var liveData = videoRenderCanvasCtx.getImageData(0, 0, canvas.width, canvas.height);
+  var dataL = liveData.data;
+   
+  var minX = 100000;
+  var minY = 100000;
+  var maxX = 0;
+  var maxY = 0;
+  
+  var foundBody = false;
+  
+  // Go through pixels and figure out bounding box of body pixels.
+  for (let x = 0; x < canvas.width; x++) {
+    for (let y = 0; y < canvas.height; y++) {
+      let n = y * canvas.width + x;
+      // Human pixel found. Update bounds.
+      if (segmentation.data[n] !== 0) {
+        if(x < minX) {
+          minX = x;
+        }
+        
+        if(y < minY) {
+          minY = y;
+        }
+        
+        if(x > maxX) {
+          maxX = x;
+        }
+        
+        if(y > maxY) {
+          maxY = y;
+        }
+        foundBody = true;
+      }
+    } 
+  }
+  
+  // Calculate dimensions of bounding box.
+  var width = maxX - minX;
+  var height = maxY - minY;
+  
+  // Define scale factor to use to allow for false negatives around this region.
+  var scale = 1.3;
+
+  //  Define scaled dimensions.
+  var newWidth = width * scale;
+  var newHeight = height * scale;
+
+  // Caculate the offset to place new bounding box so scaled from center of current bounding box.
+  var offsetX = (newWidth - width) / 2;
+  var offsetY = (newHeight - height) / 2;
+
+  var newXMin = minX - offsetX;
+  var newYMin = minY - offsetY;
+  
+  
+  // Now loop through update backgound understanding with new data
+  // if not inside a bounding box.
+  for (let x = 0; x < canvas.width; x++) {
+    for (let y = 0; y < canvas.height; y++) {
+      // If outside bounding box and we found a body, update background.
+      if (foundBody && (x < newXMin || x > newXMin + newWidth) || ( y < newYMin || y > newYMin + newHeight)) {
+        // Convert xy co-ords to array offset.
+        let n = y * canvas.width + x;
+
+        data[n * 4] = dataL[n * 4];
+        data[n * 4 + 1] = dataL[n * 4 + 1];
+        data[n * 4 + 2] = dataL[n * 4 + 2];
+        data[n * 4 + 3] = 255;            
+
+      } else if (!foundBody) {
+        // No body found at all, update all pixels.
+        let n = y * canvas.width + x;
+        data[n * 4] = dataL[n * 4];
+        data[n * 4 + 1] = dataL[n * 4 + 1];
+        data[n * 4 + 2] = dataL[n * 4 + 2];
+        data[n * 4 + 3] = 255;    
+      }
+    }
+  }
+
+  ctx.putImageData(imageData, 0, 0);
+  
+  if (DEBUG) {
+    ctx.strokeStyle = "#00FF00"
+    ctx.beginPath();
+    ctx.rect(newXMin, newYMin, newWidth, newHeight);
+    ctx.stroke();
+  }
 }
 
 
@@ -136,6 +223,12 @@ webcamCanvas.setAttribute('class', 'overlay');  //overlay value is set for class
 // which would be then used to process the frames through the BodyPix model.
 liveView.appendChild(webcamCanvas); // appendChild() method appends a node as the last child of a node
 
+var bodyPixCanvas = document.createElement('canvas');
+bodyPixCanvas.setAttribute('class', 'overlay');
+var bodyPixCanvasCtx = bodyPixCanvas.getContext('2d');
+bodyPixCanvasCtx.fillStyle = '#FF0000';
+
+liveView.appendChild(bodyPixCanvas);
 
 
 
@@ -168,8 +261,8 @@ function enableCam(event) {
       webcamCanvas.height = video.videoHeight;
       videoRenderCanvas.width = video.videoWidth;
       videoRenderCanvas.height = video.videoHeight;
-      // bodyPixCanvas.width = video.videoWidth;
-      // bodyPixCanvas.height = video.videoHeight; 
+      bodyPixCanvas.width = video.videoWidth;
+      bodyPixCanvas.height = video.videoHeight; 
       
       let webcamCanvasCtx = webcamCanvas.getContext('2d');
       // Displaying the first frame of the video in the “webcamCanvas” which will be displayed below the live video on the screen.
