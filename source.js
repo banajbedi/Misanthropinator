@@ -50,7 +50,12 @@ const segmentationProperties = {
 //                          In essence, a higher value will create a tighter crop around a person.
 // scoreThreshold        -> For pose estimation, only return individual person detections that have root part score greater or equal to this value.
 
-
+function processSegmentation(canvas, segmentation) {
+  var ctx = canvas.getContext('2d');//getContext() function returns a drawing context on the canvas, or null if the context identifier is not supported
+  console.log(segmentation)//prints the segmentation onto console
+  // Get data from our overlay canvas which is attempting to estimate background.
+  var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);//store ctx to variable named imagedata starting fromm 0,0 to canvas windth,canvas height
+  var data = imageData.data;//assigning the pixel data of variable imageData to variable named Data
 
 
 
