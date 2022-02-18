@@ -8,9 +8,9 @@
 const video = document.getElementById('webcam');
 const liveView = document.getElementById('liveView');
 const demosSection = document.getElementById('demos');
-const DEBUG = true;
+const DEBUG = false;
 
-// If you are  strategizing on debugging your application, 
+// If you are strategizing on debugging your application, 
 // you'll generally want the debug attribute to be set to "true". 
 // If you are planning on compiling your application for release (i.e. being ready for actual released and deployment), 
 // it's generally better to not have the debug attribute (or have it set to false).
@@ -25,11 +25,11 @@ const bodyPixProperties = {
     quantBytes: 4
   };
 
-// Architecture  -> Can be either MobileNetV1 or ResNet50.
-// Output stride -> Can be for MobileNetV1(8,16) and for ResNet(16,32) The smaller the value, the larger the output resolution,
+// Architecture  :- Can be either MobileNetV1 or ResNet50.
+// Output stride :- Can be for MobileNetV1(8,16) and for ResNet(16,32) The smaller the value, the larger the output resolution,
 //                  and more accurate the model at the cost of speed.
-// Multiplier    -> Only used by MobileNetV1 architecture can be 1.00 0.75 or 0.50
-// Quant bytes   -> This argument controls the bytes used for weight quantization use as 4,2,1. 
+// Multiplier    :- Only used by MobileNetV1 architecture can be 1.00 0.75 or 0.50
+// Quant bytes   :- This argument controls the bytes used for weight quantization use as 4,2,1. 
 //                  "4" leads to highest accuracy and orignal model size less the size lesser the accuracy
 
 
@@ -42,25 +42,25 @@ const segmentationProperties = {
     scoreThreshold: 0.2
   };
 
-// flipHorizontal        -> This should be set to true for videos where the video is by default flipped horizontally (i.e. a webcam),
+// flipHorizontal        --> This should be set to true for videos where the video is by default flipped horizontally (i.e. a webcam),
 //                          and you want the segmentation & pose to be returned in the proper orientation
-// internalResolution    -> The larger the internalResolution the more accurate the model at the cost of slower prediction times. 
+// internalResolution    --> The larger the internalResolution the more accurate the model at the cost of slower prediction times. 
 //                          Available values are low, medium, high, full
-// segmentationThreshold -> The model estimates a score between 0 and 1 that indicates how confident it is that part of a person is displayed in that pixel.
+// segmentationThreshold --> The model estimates a score between 0 and 1 that indicates how confident it is that part of a person is displayed in that pixel.
 //                          In essence, a higher value will create a tighter crop around a person.
-// scoreThreshold        -> For pose estimation, only return individual person detections that have root part score greater or equal to this value.
+// scoreThreshold        --> For pose estimation, only return individual person detections that have root part score greater or equal to this value.
 
 function processSegmentation(canvas, segmentation) {
   var ctx = canvas.getContext('2d');
   console.log(segmentation)
+
   // Get data from our overlay canvas which is attempting to estimate background.
   var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   var data = imageData.data;
   
   // Get data from the live webcam view which has all data.
   var liveData = videoRenderCanvasCtx.getImageData(0, 0, canvas.width, canvas.height);
-  var dataL = liveData.data;
-   
+  var dataL = liveData.data; 
   var minX = 100000;
   var minY = 100000;
   var maxX = 0;
@@ -72,6 +72,7 @@ function processSegmentation(canvas, segmentation) {
   for (let x = 0; x < canvas.width; x++) {
     for (let y = 0; y < canvas.height; y++) {
       let n = y * canvas.width + x;
+      
       // Human pixel found. Update bounds.
       if (segmentation.data[n] !== 0) {
         if(x < minX) {
@@ -94,18 +95,18 @@ function processSegmentation(canvas, segmentation) {
     } 
   }
   
-  // Calculate dimensions of bounding box.
+  // Calculating dimensions of bounding box.
   var width = maxX - minX;
   var height = maxY - minY;
   
-  // Define scale factor to use to allow for false negatives around this region.
+  // Defining scale factor to use in case of false negatives around this region.
   var scale = 1.3;
 
-  //  Define scaled dimensions.
+  //  Defining scaled dimensions.
   var newWidth = width * scale;
   var newHeight = height * scale;
 
-  // Caculate the offset to place new bounding box so scaled from center of current bounding box.
+  // Caculating the offset to place new bounding box so scaled from center of current bounding box.
   var offsetX = (newWidth - width) / 2;
   var offsetY = (newHeight - height) / 2;
 
@@ -117,9 +118,10 @@ function processSegmentation(canvas, segmentation) {
   // if not inside a bounding box.
   for (let x = 0; x < canvas.width; x++) {
     for (let y = 0; y < canvas.height; y++) {
-      // If outside bounding box and we found a body, update background.
+      
+      // If outside the bounding box we found a body, update background.
       if (foundBody && (x < newXMin || x > newXMin + newWidth) || ( y < newYMin || y > newYMin + newHeight)) {
-        // Convert xy co-ords to array offset.
+        // Convert xy coordinatess to offset of arrays.
         let n = y * canvas.width + x;
 
         data[n * 4] = dataL[n * 4];
@@ -128,7 +130,8 @@ function processSegmentation(canvas, segmentation) {
         data[n * 4 + 3] = 255;            
 
       } else if (!foundBody) {
-        // No body found at all, update all pixels.
+
+        //if no body found at all, update all the pixels.
         let n = y * canvas.width + x;
         data[n * 4] = dataL[n * 4];
         data[n * 4 + 1] = dataL[n * 4 + 1];
@@ -152,9 +155,9 @@ function processSegmentation(canvas, segmentation) {
 
 
 // Loading the model with our parameters defined above.
-// Before we can use bodypix class we must wait for it to finish
-// loading. Machine Learning models can be large and take a moment to
-// get everything needed to run.
+// Before the use of bodypix class we must wait for it to finish
+// loading because Machine Learning models can be large and take a moment to
+// get every parameter needed for its working.
 var modelHasLoaded = false;
 var model = undefined;
 
@@ -162,11 +165,11 @@ model = bodyPix.load(bodyPixProperties).then(function (loadedModel) {
   model = loadedModel;
   modelHasLoaded = true;
 
-  // Showing that demo section now model is ready to use.
+  // Showing that demo section when the model is ready to use.
   demosSection.classList.remove('invisible');
 });
 
-// just like lr = LinearRegression(), we have model with bodyPix attributes
+// just like lr = LinearRegression(), we have our model with bodyPix attributes
 
 
 
@@ -179,17 +182,17 @@ var previousSegmentationComplete = true;
 
 
 
-// This function will repeatedly call itself when the browser is ready to process
+// This function will be called repeatedly itself when the browser is ready to process
 // the next frame from webcam.
 function predictWebcam() {
   if (previousSegmentationComplete) {
-    // Copy the video frame from webcam to a tempory canvas in memory only (not in the DOM).
+    // Copy the video frame from webcam to a tempory canvas not in the DOM but to the Memory.
     videoRenderCanvasCtx.drawImage(video, 0, 0);
     previousSegmentationComplete = false;
 
-    // Now classify the canvas image we have available.
+    // Now classifying the canvas image we have available.
     // Multiple people in the image get merged into a single binary mask. 
-    // In addition to width, height, and data fields, it returns a field allPoses which contains poses for all people.
+    // In addition to attributes like width, height, and data fields, it returns a field allPoses which contains poses for all people.
     model.segmentPerson(videoRenderCanvas, segmentationProperties).then(function(segmentation) {
       // webCanvas is the object defined in Canvas 2D API which is passed in the function below
       // we got the segmentation object from the bodypix segmentPerson function which has the required data fields of the person
