@@ -43,24 +43,27 @@ const segmentationProperties = {
   };
 
 // flipHorizontal        --> This should be set to true for videos where the video is by default flipped horizontally (i.e. a webcam),
-//                          and you want the segmentation & pose to be returned in the proper orientation
+//                           and you want the segmentation & pose to be returned in the proper orientation
 // internalResolution    --> The larger the internalResolution the more accurate the model at the cost of slower prediction times. 
-//                          Available values are low, medium, high, full
+//                           Available values are low, medium, high, full
 // segmentationThreshold --> The model estimates a score between 0 and 1 that indicates how confident it is that part of a person is displayed in that pixel.
-//                          In essence, a higher value will create a tighter crop around a person.
+//                           In essence, a higher value will create a tighter crop around a person.
 // scoreThreshold        --> For pose estimation, only return individual person detections that have root part score greater or equal to this value.
 
 function processSegmentation(canvas, segmentation) {
+
+  // gives variable ctx the access to 2D drawing functions for the canvas element
   var ctx = canvas.getContext('2d');
   console.log(segmentation)
 
   // Get data from our overlay canvas which is attempting to estimate background.
-  var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  var data = imageData.data;
+  var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height); // data of the previous frame
+  var data = imageData.data;                                           // stored in variable data
   
   // Get data from the live webcam view which has all data.
-  var liveData = videoRenderCanvasCtx.getImageData(0, 0, canvas.width, canvas.height);
+  var liveData = videoRenderCanvasCtx.getImageData(0, 0, canvas.width, canvas.height); // live video frame data
   var dataL = liveData.data; 
+  
   var minX = 100000;
   var minY = 100000;
   var maxX = 0;
@@ -73,7 +76,7 @@ function processSegmentation(canvas, segmentation) {
     for (let y = 0; y < canvas.height; y++) {
       let n = y * canvas.width + x;
       
-      // Human pixel found. Update bounds.
+      // If human pixel is found i.e. pixel value = 1,  update bounds.
       if (segmentation.data[n] !== 0) {
         if(x < minX) {
           minX = x;
@@ -143,6 +146,7 @@ function processSegmentation(canvas, segmentation) {
 
   ctx.putImageData(imageData, 0, 0);
   
+  // Shows Frame around the body in Debug mode
   if (DEBUG) {
     ctx.strokeStyle = "#00FF00"
     ctx.beginPath();
@@ -226,6 +230,8 @@ webcamCanvas.setAttribute('class', 'overlay');  //overlay value is set for class
 // which would be then used to process the frames through the BodyPix model.
 liveView.appendChild(webcamCanvas); // appendChild() method appends a node as the last child of a node
 
+
+// Below variables are not being used yet.
 // var bodyPixCanvas = document.createElement('canvas');
 // bodyPixCanvas.setAttribute('class', 'overlay');
 // var bodyPixCanvasCtx = bodyPixCanvas.getContext('2d');
@@ -286,17 +292,13 @@ function enableCam(event) {
 
 
 
-
-
-
-
-// Funciton to check if webcam access is supported.
+// Function to check if webcam access is supported.
 function hasGetUserMedia() {
   return !!(navigator.mediaDevices &&
     navigator.mediaDevices.getUserMedia);
 }
 //  The JavaScript navigator object is used for browser detection and 
-//   navigator.mediaDevices.getUserMedia prompts user to allow th requested media device
+//  navigator.mediaDevices.getUserMedia prompts user to allow th requested media device
 
 if (hasGetUserMedia()) {
   const enableWebcamButton = document.getElementById('webcamButton');
