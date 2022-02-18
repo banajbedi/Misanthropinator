@@ -139,6 +139,7 @@ liveView.appendChild(webcamCanvas); // appendChild() method appends a node as th
 
 
 
+
 // Enable the live webcam view and start classification.
 function enableCam(event) {
 
@@ -157,8 +158,9 @@ function enableCam(event) {
   };
 
   navigator.mediaDevices.getUserMedia(constraints).then(function(stream) { //activate webcam stream
-    video.addEventListener('loadedmetadata', function() { //metadata for video consist of dimensions
-      //is being loaded to loadedmetadata event
+    video.addEventListener('loadedmetadata', function() { // metadata for video consist of dimensions
+                                                          // which is being loaded to loadedmetadata event
+      
       // Update widths and heights once video is successfully played   
       // otherwise it will have width and height of zero initially causing 
       // classification to fail.
@@ -166,16 +168,31 @@ function enableCam(event) {
       webcamCanvas.height = video.videoHeight;
       videoRenderCanvas.width = video.videoWidth;
       videoRenderCanvas.height = video.videoHeight;
-      /* bodyPixCanvas.width = video.videoWidth;
-      bodyPixCanvas.height = video.videoHeight; */
+      // bodyPixCanvas.width = video.videoWidth;
+      // bodyPixCanvas.height = video.videoHeight; 
+      
       let webcamCanvasCtx = webcamCanvas.getContext('2d');
+      // Displaying the first frame of the video in the “webcamCanvas” which will be displayed below the live video on the screen.
       webcamCanvasCtx.drawImage(video, 0, 0);
     }); 
+
+    // Assigning the video stream as the source for the video element.
+    // Live view from the webcam will then be displayed on the screen.
     video.srcObject = stream;
     
-    video.addEventListener('loadeddata', predictWebcam);
+    // The loadeddata event occurs when data for the current frame is loaded, 
+    // but not enough data to play next frame of the specified audio/video.
+    video.addEventListener('loadeddata', predictWebcam); // targets next frame for segmentation
   });
 }
+
+
+
+
+
+
+
+
 
 // Funciton to check if webcam access is supported.
 function hasGetUserMedia() {
