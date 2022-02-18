@@ -133,3 +133,7 @@ var videoRenderCanvas = document.createElement('canvas');
 
 // getContext() returns an object that provides methods and properties for drawing on the canvas.
 var videoRenderCanvasCtx = videoRenderCanvas.getContext('2d');
+
+var webcamCanvas = document.createElement('canvas');//it will show output frames after removing the preson
+webcamCanvas.setAttribute('class', 'overlay');//overlay value is set for class attribute of webcamCanvas element which will then bee super imposed
+liveView.appendChild(webcamCanvas);
