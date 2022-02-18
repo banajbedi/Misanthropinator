@@ -133,3 +133,9 @@ var videoRenderCanvas = document.createElement('canvas');
 
 // getContext() returns an object that provides methods and properties for drawing on the canvas.
 var videoRenderCanvasCtx = videoRenderCanvas.getContext('2d');
+
+
+// LiveView --> The video element is going to display the live video from the webcam 
+// which would be then used to process the frames through the BodyPix model.
+liveView.appendChild(webcamCanvas); // appendChild() method appends a node as the last child of a node
+
