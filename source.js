@@ -51,12 +51,15 @@ const segmentationProperties = {
 // scoreThreshold        -> For pose estimation, only return individual person detections that have root part score greater or equal to this value.
 
 function processSegmentation(canvas, segmentation) {
-  var ctx = canvas.getContext('2d');//getContext() function returns a drawing context on the canvas, or null if the context identifier is not supported
-  console.log(segmentation)//prints the segmentation onto console
-  // Get data from our overlay canvas which is attempting to estimate background.
-  var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);//store ctx to variable named imagedata starting fromm 0,0 to canvas windth,canvas height
-  var data = imageData.data;//assigning the pixel data of variable imageData to variable named Data
 
+  // getContext() function returns a drawing context on the canvas, or null if the context identifier is not supported
+  var ctx = canvas.getContext('2d');
+  console.log(segmentation) // prints the segmentation onto console
+
+  // Get data from our overlay canvas which is attempting to estimate background.
+  var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);  //store ctx to variable named imagedata starting from 0,0 to canvas width, canvas height
+  var data = imageData.data;  //assigning the pixel data of variable imageData to variable named Data
+}
 
 
 
@@ -122,3 +125,11 @@ function predictWebcam() {
   window.requestAnimationFrame(predictWebcam);
 }
 
+
+
+// It will used to temporarily hold the video frames during classification
+// of the image on each frame
+var videoRenderCanvas = document.createElement('canvas');
+
+// getContext() returns an object that provides methods and properties for drawing on the canvas.
+var videoRenderCanvasCtx = videoRenderCanvas.getContext('2d');
