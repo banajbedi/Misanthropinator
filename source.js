@@ -135,13 +135,25 @@ webcamCanvas.setAttribute('class', 'overlay');  //overlay value is set for class
 // LiveView --> The video element is going to display the live video from the webcam 
 // which would be then used to process the frames through the BodyPix model.
 liveView.appendChild(webcamCanvas); // appendChild() method appends a node as the last child of a node
-if (hasGetUserMedia()) {
-  const enableWebcamButton = document.getElementById('webcamButton');
-  enableWebcamButton.addEventListener('click', enableCam);//if webcam access is aquired then add event listener to the element 
-  //An event listener is a procedure or function in a computer program that waits for an event to occur.
-} else {
-  console.warn('getUserMedia() is not supported by your browser');
+
+
+
+
+// Enable the live webcam view and start classification.
+function enableCam(event) {
+
+  // If the BodyPix model is not loaded, then exit from the function.
+  if (!modelHasLoaded) {
+    return;
+  }
+
+  // “Enable Webcam” button is hid after it is clicked once 
+  // as the video will start playing and classification will be done continuously on the live feed.
+  event.target.classList.add('removed'); 
+
 }
+
+
 // Funciton to check if webcam access is supported.
 function hasGetUserMedia() {
   return !!(navigator.mediaDevices &&
@@ -149,3 +161,11 @@ function hasGetUserMedia() {
 }
 //  The JavaScript navigator object is used for browser detection and 
 //   navigator.mediaDevices.getUserMedia prompts user to allow th requested media device
+
+if (hasGetUserMedia()) {
+  const enableWebcamButton = document.getElementById('webcamButton');
+  enableWebcamButton.addEventListener('click', enableCam);//if webcam access is aquired then add event listener to the element 
+  //An event listener is a procedure or function in a computer program that waits for an event to occur.
+} else {
+  console.warn('getUserMedia() is not supported by your browser');
+}
