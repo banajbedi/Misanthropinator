@@ -150,7 +150,9 @@ function enableCam(event) {
   // “Enable Webcam” button is hid after it is clicked once 
   // as the video will start playing and classification will be done continuously on the live feed.
   event.target.classList.add('removed'); 
-
+  const constraints = {
+    video: true //Declare the parameters that will be passed to the getUserMedia() function. Since for this app, we only require the video feed, the video parameter alone is set to “true”.
+  };
 }
 
 
