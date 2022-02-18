@@ -135,7 +135,10 @@ var videoRenderCanvas = document.createElement('canvas');
 var videoRenderCanvasCtx = videoRenderCanvas.getContext('2d');
 
 
+
+var webcamCanvas = document.createElement('canvas');  //it will show output frames after removing the preson
+webcamCanvas.setAttribute('class', 'overlay');  //overlay value is set for class attribute of webcamCanvas element which will then bee super imposed
+
 // LiveView --> The video element is going to display the live video from the webcam 
 // which would be then used to process the frames through the BodyPix model.
 liveView.appendChild(webcamCanvas); // appendChild() method appends a node as the last child of a node
-
