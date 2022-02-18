@@ -103,6 +103,8 @@ function predictWebcam() {
     // Multiple people in the image get merged into a single binary mask. 
     // In addition to width, height, and data fields, it returns a field allPoses which contains poses for all people.
     model.segmentPerson(videoRenderCanvas, segmentationProperties).then(function(segmentation) {
+      // webCanvas is the object defined in Canvas 2D API which is passed in the function below
+      // we got the segmentation object from the bodypix segmentPerson function which has the required data fields of the person
       processSegmentation(webcamCanvas, segmentation); // this function is defined above
       previousSegmentationComplete = true;
     });
