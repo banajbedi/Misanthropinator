@@ -150,11 +150,32 @@ function enableCam(event) {
   // “Enable Webcam” button is hid after it is clicked once 
   // as the video will start playing and classification will be done continuously on the live feed.
   event.target.classList.add('removed'); 
-  const constraints = {
-    video: true //Declare the parameters that will be passed to the getUserMedia() function. Since for this app, we only require the video feed, the video parameter alone is set to “true”.
-  };
-}
 
+  const constraints = {
+    //parameters that will be passed to the getUserMedia() function. Since for this app, we only require the video feed, the video parameter alone is set to “true”.
+    video: true 
+  };
+
+  navigator.mediaDevices.getUserMedia(constraints).then(function(stream) { //activate webcam stream
+    video.addEventListener('loadedmetadata', function() { //metadata for video consist of dimensions
+      //is being loaded to loadedmetadata event
+      // Update widths and heights once video is successfully played   
+      // otherwise it will have width and height of zero initially causing 
+      // classification to fail.
+      webcamCanvas.width = video.videoWidth;
+      webcamCanvas.height = video.videoHeight;
+      videoRenderCanvas.width = video.videoWidth;
+      videoRenderCanvas.height = video.videoHeight;
+      /* bodyPixCanvas.width = video.videoWidth;
+      bodyPixCanvas.height = video.videoHeight; */
+      let webcamCanvasCtx = webcamCanvas.getContext('2d');
+      webcamCanvasCtx.drawImage(video, 0, 0);
+    }); 
+    video.srcObject = stream;
+    
+    video.addEventListener('loadeddata', predictWebcam);
+  });
+}
 
 // Funciton to check if webcam access is supported.
 function hasGetUserMedia() {
