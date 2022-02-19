@@ -71,34 +71,36 @@ function processSegmentation(canvas, segmentation) {
   
   var foundBody = false;
   
-  // Go through pixels and figure out bounding box of body pixels.
-  for (let x = 0; x < canvas.width; x++) {
-    for (let y = 0; y < canvas.height; y++) {
-      let n = y * canvas.width + x;
-      
-      // If human pixel is found i.e. pixel value = 1,  update bounds.
+  // Looping through all pixels and finding the bounding box coordinates of person's body.
+  for (let i = 0; i < canvas.width; i++) {
+    for (let j = 0; j < canvas.height; j++) {
+
+      // The “n” variable calculates the index position of the pixel 
+      let n = j * canvas.width + i;
+
+      // if person's body pixel is found, update bounds.
       if (segmentation.data[n] !== 0) {
-        if(x < minX) {
-          minX = x;
+        if(i < minX) {
+          minX = i;
         }
         
-        if(y < minY) {
-          minY = y;
+        if(j < minY) {
+          minY = j;
         }
         
-        if(x > maxX) {
-          maxX = x;
+        if(i > maxX) {
+          maxX = i;
         }
         
-        if(y > maxY) {
-          maxY = y;
+        if(j > maxY) {
+          maxY = j;
         }
         foundBody = true;
       }
     } 
   }
   
-  // Calculating dimensions of bounding box.
+  // Calculating dimensions of bounding box of person's body.
   var width = maxX - minX;
   var height = maxY - minY;
   
