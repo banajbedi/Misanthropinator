@@ -121,13 +121,18 @@ function processSegmentation(canvas, segmentation) {
   var newYMin = minY - offsetY;
   
   
-  // Now loop through update backgound understanding with new data
-  // if not inside a bounding box.
-  for (let x = 0; x < canvas.width; x++) {
-    for (let y = 0; y < canvas.height; y++) {
+
+  // Looping through all the pixels and if there is a person’s body identified, 
+  // then only the pixels in the “webcamCanvas” element with the live video data are updated, 
+  // which are outside of the bounding box coordinates.
+  // If no person’s body is identified in this current frame, all the pixels of “webcamCanvas” element
+  // are updated with that of the live video data. 
+  for (let i = 0; i < canvas.width; i++) {
+    for (let j = 0; j < canvas.height; j++) {
       
       // If outside the bounding box we found a body, update background.
-      if (foundBody && (x < newXMin || x > newXMin + newWidth) || ( y < newYMin || y > newYMin + newHeight)) {
+      if (foundBody && (i < newXMin || i > newXMin + newWidth) || ( j < newYMin || j > newYMin + newHeight)) { // newXMin + newWidth = newXMax
+                                                                                                               // newYMin + newHeight = newYMax
         // Convert xy coordinatess to offset of arrays.
         let n = y * canvas.width + x;
 
