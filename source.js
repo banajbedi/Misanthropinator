@@ -81,21 +81,22 @@ function processSegmentation(canvas, segmentation) {
       // if person's body pixel is found, update bounds.
       if (segmentation.data[n] !== 0) { //segmentation data will be 0 when no body part is identified with
                                         //or doesn't exist in the pixed being examined
+
         if(i < minX) {
           minX = i;
-        }
+        } // first pixel in which a body port was identified in canvas width wise manner
         
         if(j < minY) {
           minY = j;
-        }
+        } // first pixel in which a body part was identified in canvas height wise manner
         
         if(i > maxX) {
           maxX = i;
-        }
+        } // last pixel in which a body part was identified in canvas width wise manner
         
         if(j > maxY) {
           maxY = j;
-        }
+        } // last pixel in which a body part was identified in canvas height wise manner
         foundBody = true;
       }
     } 
@@ -106,7 +107,8 @@ function processSegmentation(canvas, segmentation) {
   var height = maxY - minY;
   
   // Defining scale factor to use in case of false negatives around this region.
-  var scale = 1.3;
+  var scale = 1.3; // false negative here indicates that when body part was present in the pixel 
+                  //but was not identified by our model
 
   //  Defining scaled dimensions.
   var newWidth = width * scale;
