@@ -79,8 +79,8 @@ function processSegmentation(canvas, segmentation) {
       let n = j * canvas.width + i;
 
       // if person's body pixel is found, update bounds.
-      if (segmentation.data[n] !== 0) { //segmentation data will be 0 when no body part is identified with
-                                        //or doesn't exist in the pixed being examined
+      if (segmentation.data[n] !== 0) { // segmentation data will be 0 when no body part is identified with
+                                        // or doesn't exist in the pixed being examined
         if(i < minX) {
           minX = i;
         }
