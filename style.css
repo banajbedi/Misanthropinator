@@ -4,11 +4,19 @@
             Chandan Kansal 
 */
 
-
+html{
+  height:100%;
+}
 body {
     font-family: Avantgarde, TeX Gyre Adventor, URW Gothic L, sans-serif;
     margin: 2em;
     color: #3D3D3D;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    background-color: rgba(20, 20, 20, 0.356);
 }
 
 h1{
@@ -45,7 +53,14 @@ button {
 .invisible {
     opacity: 0.2;
 }
-
+footer{
+  
+  text-align: center;
+  padding: 3px;
+  background-color: Orange;
+  color: black;
+  /* position: fixed; */
+}
 .note {
     font-family: arial, sans-serif;
     font-style: italic;
@@ -54,6 +69,10 @@ button {
 
 .webcam {
     position: relative;
+}
+
+main {
+   flex-grow: 1;
 }
 
 .webcam, .classifyOnClick {
