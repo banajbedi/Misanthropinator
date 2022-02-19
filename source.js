@@ -134,7 +134,7 @@ function processSegmentation(canvas, segmentation) {
       if (foundBody && (i < newXMin || i > newXMin + newWidth) || ( j < newYMin || j > newYMin + newHeight)) { // newXMin + newWidth = newXMax
                                                                                                                // newYMin + newHeight = newYMax
         // Convert xy coordinatess to offset of arrays.
-        let n = y * canvas.width + x;
+        let n = j * canvas.width + i;
 
         // “webcamCanvas” element (R, G, B, A) are updated with the live video data.
         data[n * 4] = dataL[n * 4]; // R
@@ -145,7 +145,7 @@ function processSegmentation(canvas, segmentation) {
       } else if (!foundBody) {
 
         //if no body found at all, update all the pixels.
-        let n = y * canvas.width + x;
+        let n = j * canvas.width + i;
         data[n * 4] = dataL[n * 4];
         data[n * 4 + 1] = dataL[n * 4 + 1];
         data[n * 4 + 2] = dataL[n * 4 + 2];
