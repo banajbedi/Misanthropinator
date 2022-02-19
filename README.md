@@ -1,4 +1,4 @@
-# Misanthropinator : An interface which make you INVISIBLE!
+# Misanthropinator : An interface which makes you INVISIBLE!
 
 A Machine Learning model based on Tensorflow.js.
 
