@@ -136,10 +136,11 @@ function processSegmentation(canvas, segmentation) {
         // Convert xy coordinatess to offset of arrays.
         let n = y * canvas.width + x;
 
-        data[n * 4] = dataL[n * 4];
-        data[n * 4 + 1] = dataL[n * 4 + 1];
-        data[n * 4 + 2] = dataL[n * 4 + 2];
-        data[n * 4 + 3] = 255;            
+        // “webcamCanvas” element (R, G, B, A) are updated with the live video data.
+        data[n * 4] = dataL[n * 4]; // R
+        data[n * 4 + 1] = dataL[n * 4 + 1]; // G
+        data[n * 4 + 2] = dataL[n * 4 + 2]; // B
+        data[n * 4 + 3] = 255; // A -> responsible for blending of one pixel over another.
 
       } else if (!foundBody) {
 
@@ -152,7 +153,7 @@ function processSegmentation(canvas, segmentation) {
       }
     }
   }
-
+  // Drawing the ImageData on the “webcamCanvas” element 
   ctx.putImageData(imageData, 0, 0);
   
   // Shows Frame around the body in Debug mode
