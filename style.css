@@ -16,7 +16,9 @@ body {
     flex-direction: column;
     display: grid;
     grid-template-rows: auto 1fr auto;
-    background-color: rgba(20, 20, 20, 0.356);
+    background-image: url(hello.jpg);
+    background-size: 100%;
+    /* background-color: rgba(20, 20, 20, 0.356); */
 }
 
 h1{
