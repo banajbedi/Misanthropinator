@@ -6,8 +6,4 @@ This app uses the TensorFlow.js pre-trained BodyPix model to identify the person
 
 Checkout here: https://banajbedi.github.io/Misanthropinator/
 
-![disappearing people](https://user-images.githubusercontent.com/4972997/74691149-882fce00-5196-11ea-80bc-f1b9cb3ff275.gif)
-
-Special Thanks to @jasonmayes (https://github.com/jasonmayes).
-
 Made with love ♥
