@@ -6,5 +6,6 @@ This app uses the TensorFlow.js pre-trained BodyPix model to identify the person
 
 Checkout here: https://banajbedi.github.io/Misanthropinator/
 
-(Please wait for model to load when running for the first time)  
+(Please wait for the model to load when running for the first time)  
+  
 Made with love ♥
