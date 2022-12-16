@@ -8,8 +8,6 @@
 A Machine Learning model based on Tensorflow.js.
 
 This app uses the TensorFlow.js pre-trained BodyPix model to identify the person in the image (using the pixel wise classification output) and remove it in real time from the screen.
-  
-<img src="https://user-images.githubusercontent.com/7460892/207003772-ba2061bc-f8fd-4479-ba42-4712328b7085.png" width="80%" height="80%">
 
 ## **3. Live link**
 Checkout here: https://banajbedi.github.io/Misanthropinator/
